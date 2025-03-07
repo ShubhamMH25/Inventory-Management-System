@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products - Inventory Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .logo-img { width: 20px; height: 20px; vertical-align: middle; margin-right: 5px; }
+        .success-message { color: green; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/nav :: navbar(currentPage='products')}"></div>
+    <div class="container mt-4">
+        <h1>Inventory Management System - Products</h1>
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        
+        <div class="mb-3">
+            <form th:action="@{/products}" method="get" class="form-inline">
+                <label for="categoryId" class="mr-2">Filter by Category:</label>
+                <select id="categoryId" name="categoryId" class="form-control mr-3">
+                    <option value="">All Categories</option>
+                    <option th:each="category : ${categories}" 
+                            th:value="${category.id}" 
+                            th:text="${category.name}"></option>
+                </select>
+                <label for="brandId" class="mr-2">Filter by Brand:</label>
+                <select id="brandId" name="brandId" class="form-control mr-3">
+                    <option value="">All Brands</option>
+                    <option th:each="brand : ${brands}" 
+                            th:value="${brand.id}" 
+                            th:text="${brand.name}"></option>
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+        </div>
+        
+        <a href="/products/new" class="btn btn-success mb-3">Add New Product</a>
+        
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.description}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.quantity}"></td>
+                    <td th:text="${product.category.name}"></td>
+                    <td>
+                        <img th:src="${product.brand.logoUrl}" class="logo-img" alt="Brand Logo"/>
+                        <span th:text="${product.brand.name}"></span>
+                    </td>
+                    <td>
+                        <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-warning btn-sm">Edit</a>
+                        <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-danger btn-sm" 
+                           onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

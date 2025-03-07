@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Inventory Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .card {
+            transition: transform 0.2s; /* Smooth scaling effect */
+        }
+        .card:hover {
+            transform: scale(1.05); /* Scale up on hover */
+        }
+        .product-img {
+            width: 50px; 
+            height: 50px; 
+            vertical-align: middle; 
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/nav :: navbar(currentPage='home')}"></div>
+    <div class="container text-center mt-4">
+        <h1>Welcome to the Inventory Management System</h1>
+        
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-3">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Products</h5>
+                        <p class="card-text" th:text="${totalProducts}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Categories</h5>
+                        <p class="card-text" th:text="${totalCategories}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Brands</h5>
+                        <p class="card-text" th:text="${totalBrands}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form th:action="@{/products}" method="get" class="mt-4">
+            <div class="input-group">
+                <input type="text" name="query" class="form-control" placeholder="Search products by name">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="trending-section mt-4">
+            <h2>Globally Trending Products</h2>
+            <table class="table" th:if="${trendingProducts != null and not #lists.isEmpty(trendingProducts)}">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${trendingProducts}">
+                        <td>
+                            <img th:src="${product.imageUrl}" class="product-img" alt="Trending Product"/>
+                            <span th:text="${product.name}"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p th:if="${trendingProducts == null or #lists.isEmpty(trendingProducts)}">
+                No trending products available at the moment.
+            </p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

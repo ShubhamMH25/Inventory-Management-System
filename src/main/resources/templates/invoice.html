@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice - Inventory Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: 20px auto; }
+        .invoice-box { border: 1px solid #ddd; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .button { padding: 5px 10px; text-decoration: none; color: white; background-color: #007bff; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/nav :: navbar(currentPage='billing')}"></div>
+    <div class="container">
+        <h1>Invoice</h1>
+        <div class="invoice-box">
+            <h2>Invoice #<span th:text="${bill.id}"></span></h2>
+            <p><strong>Generated At:</strong> <span th:text="${#temporals.format(bill.generatedAt, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <h3>Customer Details</h3>
+            <p><strong>Name:</strong> <span th:text="${bill.customer.name}"></span></p>
+            <p><strong>Age:</strong> <span th:text="${bill.customer.age}"></span></p>
+            <p><strong>Mobile Number:</strong> <span th:text="${bill.customer.phone}"></span></p>
+            <h3>Purchased Items</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${bill.items}">
+                        <td th:text="${item.product.name}"></td>
+                        <td th:text="${item.quantity}"></td>
+                        <td th:text="${item.price}"></td>
+                        <td th:text="${item.quantity * item.price}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Total Price: <span th:text="${bill.totalPrice}"></span></h3>
+        </div>
+        <a href="/billing" class="button">Back to Billing</a>
+        <a href="/" class="button">Back to Home</a>
+    </div>
+</body>
+</html>

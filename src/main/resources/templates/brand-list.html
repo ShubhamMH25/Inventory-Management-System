@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Brands - Inventory Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div th:replace="fragments/nav :: navbar(currentPage='brands')"></div>
+    <div class="container mt-4">
+        <h1>Manage Brands</h1>
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <a href="/brands/new" class="btn btn-success mb-3">Add New Brand</a>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="brand : ${brands}">
+                    <td th:text="${brand.id}"></td>
+                    <td th:text="${brand.name}"></td>
+                    <td>
+                        <a th:href="@{/brands/delete/{id}(id=${brand.id})}" class="btn btn-danger btn-sm" 
+                           onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+</body>
+</html>

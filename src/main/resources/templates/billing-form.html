@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Bill - Inventory Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        let itemCount = 0;
+
+        function addItem() {
+            itemCount++;
+            const table = document.getElementById("itemsTable").getElementsByTagName('tbody')[0];
+            const row = table.insertRow();
+            row.id = 'item-' + itemCount;
+
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+
+            cell1.innerHTML = '<select name="productIds" class="form-control" required>' +
+                '<option value="">Select a product</option>' +
+                '<option th:each="product : ${products}" th:value="${product.id}" ' +
+                'th:text="${product.name + \' (Qty: \' + product.quantity + \', Price: \' + product.price + \')\'}"></option>' +
+                '</select>';
+
+            cell2.innerHTML = '<input type="number" name="quantities" class="form-control" required min="1">';
+
+            cell3.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeItem(' + itemCount + ')">Remove</button>';
+        }
+
+        function removeItem(id) {
+            const row = document.getElementById('item-' + id);
+            row.parentNode.removeChild(row);
+        }
+    </script>
+</head>
+<body>
+    <div th:replace="~{fragments/nav :: navbar(currentPage='billing')}"></div>
+    <div class="container mt-4">
+        <h1>Create New Bill</h1>
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+        <form th:action="@{/billing}" method="post">
+            <h3>Customer Details</h3>
+            <label for="customerId">Select Existing Customer (or leave blank to add new):</label>
+            <select id="customerId" name="customerId" class="form-control mb-3">
+                <option value="">Add new customer</option>
+                <option th:each="customer : ${customers}" 
+                        th:value="${customer.id}" 
+                        th:text="${customer.name}"></option>
+            </select>
+
+            <div id="newCustomerFields">
+                <label for="customerName">Customer Name:</label>
+                <input type="text" id="customerName" name="customerName" class="form-control mb-3">
+
+                <label for="customerAge">Age:</label>
+                <input type="number" id="customerAge" name="customerAge" min="1" class="form-control mb-3">
+
+                <label for="customerPhone">Mobile Number:</label>
+                <input type="text" id="customerPhone" name="customerPhone" class="form-control mb-3">
+            </div>
+
+            <h3>  Add Products   </h3>
+            <table id="itemsTable" class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button type="button" class="btn btn-primary mb-3" onclick="addItem()">Add Product</button>
+
+            <button type="submit" class="btn btn-success">Create Bill</button>
+            <a href="/billing" class="btn btn-danger ml-2">Cancel</a>
+        </form>
+        <a href="/" class="btn btn-secondary mt-3">Back to Home</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
