@@ -31,16 +31,16 @@ public class BillingController {
     private ProductRepo productRepository;
 
     @GetMapping
-    public String getAllBills(Model model, @ModelAttribute("successMessage") String successMessage) {
-        model.addAttribute("bills", billRepository.findAll());
-        model.addAttribute("successMessage", successMessage);
-        return "billing-list";
+    public String showBillingLandingPage() {
+        return "redirect:/billing/new"; // Redirect to Create New Bill page
     }
 
     @GetMapping("/new")
-    public String showBillingForm(Model model) {
+    public String showBillingForm(Model model, @ModelAttribute("successMessage") String successMessage) {
         model.addAttribute("customers", customerRepository.findAll());
         model.addAttribute("products", productRepository.findAll());
+        model.addAttribute("bills", billRepository.findAll()); // Add billing history
+        model.addAttribute("successMessage", successMessage);
         return "billing-form";
     }
 
@@ -129,7 +129,7 @@ public class BillingController {
     public String showInvoice(@PathVariable Long id, Model model) {
         var billOpt = billRepository.findById(id);
         if (billOpt.isEmpty()) {
-            return "redirect:/billing";
+            return "redirect:/billing/new";
         }
         model.addAttribute("bill", billOpt.get());
         return "invoice";

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Billing - Inventory Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: 20px auto; text-align: center; }
+        .button { padding: 10px 20px; text-decoration: none; color: white; background-color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/nav :: navbar(currentPage='billing')}"></div>
+    <div class="container">
+        <h1>Billing</h1>
+        <a href="/billing/new" class="button">Create New Bill</a>
+        <a href="/" class="button">Back to Home</a>
+    </div>
+</body>
+</html>

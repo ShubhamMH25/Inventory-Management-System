@@ -2,19 +2,88 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Inventory System</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Inventory Management System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --card-hover: #f8f9fa;
+            --nav-bg: #ffffff;
+        }
+ 
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+ 
+        /* Navbar Styles */
+        .navbar {
+            background: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            animation: slideDown 0.5s ease-out;
+        }
+ 
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+ 
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+ 
+        .navbar-brand:hover {
+            color: #0056b3;
+        }
+ 
+        .nav-link {
+            color: var(--secondary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+ 
+        .nav-link:hover {
+            color: var(--primary-color);
+            background: #f8f9fa;
+        }
+ 
+        .nav-link.active {
+            color: var(--primary-color);
+            font-weight: 600;
+            background: #e9ecef;
+        }
+ 
+        .nav-link i {
+            margin-right: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+ 
+        .nav-link:hover i {
+            transform: rotate(20deg);
+        }
+ 
+        /* Main Content Styles */
+
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="navbar(currentPage)">
+    <nav class="navbar navbar-expand-lg" th:fragment="navbar(currentPage)">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Inventory System</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" th:classappend="${currentPage == 'home'} ? 'active' : ''" th:href="@{/}">
                             <i class="fas fa-home"></i> Home
@@ -44,9 +113,25 @@
             </div>
         </div>
     </nav>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ 
+    
+ 
+ 
+ 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+ 
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                const icon = link.querySelector('i');
+                icon.style.transform = 'rotate(20deg)';
+            });
+            link.addEventListener('mouseleave', () => {
+                const icon = link.querySelector('i');
+                icon.style.transform = 'rotate(0deg)';
+            });
+        });
+    </script>
 </body>
 </html>
