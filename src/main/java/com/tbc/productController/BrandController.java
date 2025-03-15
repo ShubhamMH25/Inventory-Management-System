@@ -36,7 +36,7 @@ public class BrandController {
     @PostMapping
     public String createBrand(@ModelAttribute Brand brand, RedirectAttributes redirectAttributes) {
     	// Fetch the logo URL using LogoService
-        String logoUrl = logoService.fetchLogoUrl(brand.getName());
+        String logoUrl = logoService.getBrandLogo(brand.getName());
         brand.setLogoUrl(logoUrl);
         
         brandRepository.save(brand);

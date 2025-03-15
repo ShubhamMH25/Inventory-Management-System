@@ -4,494 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Bill - Inventory Management</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4361ee;
-            --primary-hover: #3a56d4;
-            --secondary: #3f37c9;
-            --danger: #ef233c;
-            --danger-hover: #d90429;
-            --success: #4cc9f0;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #ced4da;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            color: var(--dark);
-            line-height: 1.6;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 24px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--gray);
-            padding-bottom: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .card-title {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin: 0;
-        }
-        
-        .form-group {
-            margin-bottom: 16px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--gray);
-            border-radius: 4px;
-            font-size: 16px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.25);
-        }
-        
-        .btn {
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 500;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-        }
-        
-        .btn-danger {
-            background-color: var(--danger);
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background-color: var(--danger-hover);
-        }
-        
-        .btn-link {
-            background: none;
-            color: var(--primary);
-            text-decoration: none;
-            padding: 6px 12px;
-        }
-        
-        .btn-link:hover {
-            text-decoration: underline;
-            background-color: rgba(67, 97, 238, 0.1);
-        }
-        
-        .btn-icon {
-            margin-right: 8px;
-        }
-        
-        .table-container {
-            overflow-x: auto;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin-bottom: 20px;
-        }
-        
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--gray);
-        }
-        
-        th {
-            background-color: #f1f5f9;
-            font-weight: 600;
-            color: var(--secondary);
-        }
-        
-        tr:hover {
-            background-color: rgba(67, 97, 238, 0.05);
-        }
-        
-        .alert {
-            padding: 12px 16px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border-left: 4px solid;
-            display: flex;
-            align-items: center;
-        }
-        
-        .alert-danger {
-            background-color: rgba(239, 35, 60, 0.1);
-            border-left-color: var(--danger);
-            color: var(--danger);
-        }
-        
-        .alert-success {
-            background-color: rgba(76, 201, 240, 0.1);
-            border-left-color: var(--success);
-            color: var(--success);
-        }
-        
-        .alert-icon {
-            margin-right: 10px;
-            font-size: 18px;
-        }
-        
-        .customer-toggle {
-            margin: 15px 0;
-            border: 1px solid var(--gray);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .customer-toggle-header {
-            background-color: #f1f5f9;
-            padding: 12px 15px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 500;
-        }
-        
-        .customer-toggle-content {
-            padding: 15px;
-            border-top: 1px solid var(--gray);
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 15px;
-        }
-        
-        .page-title {
-            font-size: 2rem;
-            color: var(--secondary);
-        }
-        
-        .navbar {
-            background-color: var(--dark);
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .nav-brand {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-decoration: none;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .nav-link {
-            color: var(--light);
-            text-decoration: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            transition: background 0.3s ease;
-        }
-        
-        .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .nav-link.active {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .flex-end {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        
-        .mb-4 {
-            margin-bottom: 16px;
-        }
-        
-        @media (max-width: 768px) {
-            .card-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .flex-end {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-        }
-    </style>
-    <script>
-        let itemCount = 0;
-        let products = [];
-
-        // Fetch products on page load
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/api/products')
-                .then(response => response.json())
-                .then(data => {
-                    products = data;
-                })
-                .catch(error => console.error('Error fetching products:', error));
-
-            // Ensure initial state of customer fields
-            toggleAddUser();
-        });
-
-        function addItem() {
-            itemCount++;
-            const table = document.getElementById("itemsTable").getElementsByTagName('tbody')[0];
-            const row = table.insertRow();
-            row.id = 'item-' + itemCount;
-
-            const cell1 = row.insertCell(0);
-            const cell2 = row.insertCell(1);
-            const cell3 = row.insertCell(2);
-
-            // Create product dropdown
-            const select = document.createElement('select');
-            select.name = "productIds";
-            select.required = true;
-            const defaultOption = document.createElement('option');
-            defaultOption.value = "";
-            defaultOption.text = "Select a product";
-            select.appendChild(defaultOption);
-            products.forEach(product => {
-                const option = document.createElement('option');
-                option.value = product.id;
-                option.text = `${product.name} (Qty: ${product.quantity}, Price: ${product.price})`;
-                select.appendChild(option);
-            });
-            cell1.appendChild(select);
-
-            // Create quantity input
-            const quantityInput = document.createElement('input');
-            quantityInput.type = "number";
-            quantityInput.name = "quantities";
-            quantityInput.required = true;
-            quantityInput.min = "1";
-            cell2.appendChild(quantityInput);
-
-            // Create remove button
-            const removeBtn = document.createElement('button');
-            removeBtn.type = "button";
-            removeBtn.className = "btn btn-danger remove-btn";
-            removeBtn.textContent = "Remove";
-            removeBtn.onclick = () => removeItem(itemCount);
-            cell3.appendChild(removeBtn);
-        }
-
-        function removeItem(id) {
-            const row = document.getElementById('item-' + id);
-            row.parentNode.removeChild(row);
-        }
-
-        // Toggle customer details form
-        function toggleAddUser() {
-            const customerId = document.getElementById("customerId");
-            const newCustomerFields = document.getElementById("newCustomerFields");
-            if (customerId.value === "") { // "Add User" is the default empty option
-                newCustomerFields.classList.remove("hidden");
-                newCustomerFields.setAttribute("open", "true"); // Expand the details element
-            } else {
-                newCustomerFields.classList.add("hidden");
-                newCustomerFields.removeAttribute("open"); // Collapse the details element
-            }
-        }
-    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css">
+    <link rel="stylesheet" th:href="@{/css/billing.css}">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script th:src="@{/js/billing.js}"></script>
 </head>
 <body>
-<div th:replace="~{fragments/nav :: navbar(currentPage='billing-form')}"></div>
+    <div th:replace="~{fragments/nav :: navbar(currentPage='billing')}"></div>
+    <div class="container" x-data="billingApp">
+        <h1 class="mb-4">Create New Bill</h1>
 
-    <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">Create New Bill</h1>
-            <a href="/" class="btn btn-link">
-                <i class="fas fa-arrow-left btn-icon"></i> Back to Dashboard
-            </a>
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+        <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+        <div th:if="${lowStockAlerts}" class="alert-message">
+            <ul>
+                <li th:each="alert : ${lowStockAlerts}" th:text="${alert}"></li>
+            </ul>
         </div>
-        
-        <div th:if="${errorMessage}" class="alert alert-danger">
-            <i class="fas fa-exclamation-circle alert-icon"></i>
-            <span th:text="${errorMessage}"></span>
+
+        <div class="progress-stepper">
+            <div class="step" :class="{ 'active': currentStep === 1, 'completed': currentStep > 1 }">
+                <div class="step-number">1</div>
+                <div class="step-title">Customer Details</div>
+                <div class="step-line"></div>
+            </div>
+            <div class="step" :class="{ 'active': currentStep === 2, 'completed': currentStep > 2 }">
+                <div class="step-number">2</div>
+                <div class="step-title">Select Products</div>
+                <div class="step-line"></div>
+            </div>
+            <div class="step" :class="{ 'active': currentStep === 3 }">
+                <div class="step-number">3</div>
+                <div class="step-title">Review & Confirm</div>
+                <div class="step-line"></div>
+            </div>
         </div>
-        
-        <div th:if="${successMessage}" class="alert alert-success">
-            <i class="fas fa-check-circle alert-icon"></i>
-            <span th:text="${successMessage}"></span>
-        </div>
-        
-        <form th:action="@{/billing}" method="post">
-            <div class="card animate__animated animate__fadeIn">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-user-circle btn-icon"></i>
-                        Customer Details
-                    </h3>
-                </div>
-                
-                <div class="form-group">
-                    <label for="customerId">Select Existing Customer or Add User:</label>
-                    <select id="customerId" name="customerId" onchange="toggleAddUser()">
-                        <option value="">Add User</option>
-                        <option th:each="customer : ${customers}" 
-                                th:value="${customer.id}" 
-                                th:text="${customer.name}"></option>
-                    </select>
-                </div>
-                
-                <details id="newCustomerFields" class="hidden">
-                    <summary>Add New Customer</summary>
-                    <div class="customer-toggle-content">
-                        <div class="form-group">
-                            <label for="customerName">
-                                <i class="fas fa-id-card btn-icon"></i>
-                                Customer Name:
-                            </label>
-                            <input type="text" id="customerName" name="customerName">
+
+        <div class="card">
+            <div class="card-body">
+                <!-- Step 1: Customer Details -->
+                <div x-show="currentStep === 1" x-transition>
+                    <h3 class="mb-3">Customer Details</h3>
+                    <div class="mb-3">
+                        <label for="customerId" class="form-label">Select Customer</label>
+                        <select id="customerId" class="form-select" x-model="selectedCustomerId" @change="selectCustomer()">
+                            <option value="">Add New Customer</option>
+                            <option th:each="customer : ${customers}" 
+                                    th:value="${customer.id}" 
+                                    th:text="${customer.name}"></option>
+                        </select>
+                    </div>
+
+                    <div x-show="showNewCustomerForm" x-transition class="mb-3">
+                        <h4 class="mb-3">Add New Customer</h4>
+                        <div class="mb-3">
+                            <label for="customerName" class="form-label">Name</label>
+                            <input type="text" id="customerName" class="form-control" x-model="newCustomer.name" required>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="customerAge">
-                                <i class="fas fa-birthday-cake btn-icon"></i>
-                                Age:
-                            </label>
-                            <input type="number" id="customerAge" name="customerAge" min="1">
+                        <div class="mb-3">
+                            <label for="customerAge" class="form-label">Age</label>
+                            <input type="number" id="customerAge" class="form-control" x-model.number="newCustomer.age" min="1">
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="customerPhone">
-                                <i class="fas fa-phone btn-icon"></i>
-                                Mobile Number:
-                            </label>
-                            <input type="text" id="customerPhone" name="customerPhone">
+                        <div class="mb-3">
+                            <label for="customerPhone" class="form-label">Phone</label>
+                            <input type="text" id="customerPhone" class="form-control" x-model="newCustomer.phone">
+                        </div>
+                        <div class="mb-3">
+                            <label for="customerEmail" class="form-label">Email</label>
+                            <input type="email" id="customerEmail" class="form-control" x-model="newCustomer.email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="customerAddress" class="form-label">Address</label>
+                            <input type="text" id="customerAddress" class="form-control" x-model="newCustomer.address">
+                        </div>
+                        <button type="button" class="btn btn-primary" @click="addNewCustomer()">Add Customer</button>
+                    </div>
+                    <button type="button" class="btn btn-primary" @click="nextStep()">Next</button>
+                </div>
+
+                <!-- Step 2: Select Products -->
+                <div x-show="currentStep === 2" x-transition>
+                    <h3 class="mb-3">Select Products</h3>
+                    <div class="search-container">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="form-control search-input" placeholder="Search products..." x-model="searchQuery" @input="filterProducts()">
+                    </div>
+                    <div class="loading-spinner" x-show="loading">
+                        <div class="spinner"></div> Loading products...
+                    </div>
+                    <div x-show="!loading">
+                        <template x-for="product in filteredProducts" :key="product.id">
+                            <div class="product-item slide-in">
+                                <div class="product-image">📦</div>
+                                <div class="product-details">
+                                    <div class="product-name" x-text="product.name"></div>
+                                    <div class="product-info" x-text="`Price: $${product.price} | Stock: ${product.quantity}`"></div>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-sm" @click="addToSelected(product)" :disabled="product.quantity === 0">Add</button>
+                            </div>
+                        </template>
+                    </div>
+                    <h4 class="mt-4">Selected Products</h4>
+                    <template x-for="(item, index) in selectedProducts" :key="item.id">
+                        <div class="product-item slide-in">
+                            <div class="product-image">📦</div>
+                            <div class="product-details">
+                                <div class="product-name" x-text="item.name"></div>
+                                <div class="product-info" x-text="`Price: $${item.price} | Total: $${(item.price * item.selectedQuantity).toFixed(2)}`"></div>
+                            </div>
+                            <div class="product-controls">
+                                <div class="quantity-control">
+                                    <button class="btn btn-sm btn-secondary" @click="decreaseQuantity(index)">-</button>
+                                    <span class="mx-2" x-text="item.selectedQuantity"></span>
+                                    <button class="btn btn-sm btn-secondary" @click="increaseQuantity(index)">+</button>
+                                </div>
+                                <button class="btn btn-danger btn-sm" @click="removeSelectedProduct(index)">Remove</button>
+                            </div>
+                        </div>
+                    </template>
+                    <button type="button" class="btn btn-secondary mt-3" @click="prevStep()">Previous</button>
+                    <button type="button" class="btn btn-primary mt-3 ms-2" @click="nextStep()">Next</button>
+                </div>
+
+                <!-- Step 3: Review & Confirm -->
+                <div x-show="currentStep === 3" x-transition>
+                    <h3 class="mb-3">Review & Confirm</h3>
+                    <div class="summary-card">
+                        <div class="summary-title">Bill Summary</div>
+                        <div class="summary-item">
+                            <span>Customer:</span>
+                            <span x-text="selectedCustomer ? selectedCustomer.name : 'N/A'"></span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Items:</span>
+                            <span x-text="selectedProducts.length"></span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Total:</span>
+                            <span x-text="totalPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' })"></span>
                         </div>
                     </div>
-                </details>
-            </div>
-            
-            <div class="card animate__animated animate__fadeIn">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-shopping-cart btn-icon"></i>
-                        Products
-                    </h3>
-                    <button type="button" class="btn btn-primary" onclick="addItem()">
-                        <i class="fas fa-plus btn-icon"></i>
-                        Add Product
-                    </button>
-                </div>
-                
-                <div class="table-container">
-                    <table id="itemsTable">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="card animate__animated animate__fadeIn">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-history btn-icon"></i>
-                        Billing History
-                    </h3>
-                </div>
-                
-                <div class="table-container">
-                    <table>
+                    <h4>Billing History</h4>
+                    <table id="billingHistoryTable" class="table table-bordered mb-3">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -505,33 +163,21 @@
                             <tr th:each="bill : ${bills}">
                                 <td th:text="${bill.id}"></td>
                                 <td th:text="${bill.customer.name}"></td>
-                                <td th:text="${bill.totalPrice}"></td>
+                                <td th:text="'$' + ${bill.totalPrice}"></td>
                                 <td th:text="${#temporals.format(bill.generatedAt, 'yyyy-MM-dd HH:mm')}"></td>
                                 <td>
-                                    <a th:href="@{/billing/invoice/{id}(id=${bill.id})}" class="btn btn-link">View Invoice</a>
+                                    <a th:href="@{/billing/invoice/{id}(id=${bill.id})}" class="btn btn-primary btn-sm">View Invoice</a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                    <button type="button" class="btn btn-secondary" @click="prevStep()">Previous</button>
+                    <button type="button" class="btn btn-success ms-2" @click="createBill()">Create Bill</button>
                 </div>
             </div>
-            
-            <div class="flex-end mb-4">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save btn-icon"></i>
-                    Create Bill
-                </button>
-                <a href="/billing" class="btn btn-danger">
-                    <i class="fas fa-times btn-icon"></i>
-                    Cancel
-                </a>
-            </div>
-        </form>
-        
-        <a href="/" class="btn btn-link">
-            <i class="fas fa-arrow-left btn-icon"></i>
-            Back to Home
-        </a>
+        </div>
+        <a href="/" class="btn btn-secondary mt-3">Back to Home</a>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.tbc.services;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -10,18 +11,19 @@ public class LogoService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public String fetchLogoUrl(String brandName) {
-        // Convert brand name to a domain (e.g., "Apple" -> "apple.com")
-        String domain = brandName.toLowerCase().replaceAll("[^a-z0-9]", "") + ".com";
-        String clearbitUrl = "https://logo.clearbit.com/" + domain;
+        public String getBrandLogo(String brandName) {
+            String url = "https://en.wikipedia.org/w/api.php?action=query&titles=" + brandName + 
+                         "&prop=pageimages&format=json&pithumbsize=500";
 
-        try {
-            // Check if the logo exists by making a HEAD request
-            restTemplate.headForHeaders(clearbitUrl);
-            return clearbitUrl;
-        } catch (Exception e) {
-            // Fallback to a default placeholder if the logo isn't found
-            return "/images/placeholder-logo.png";
-        }
+            String response = restTemplate.getForObject(url, String.class);
+
+            JSONObject jsonObject = new JSONObject(response);
+            JSONObject pages = jsonObject.getJSONObject("query").getJSONObject("pages");
+
+            String logoPath = pages.keys().next();
+            JSONObject logoData = pages.getJSONObject(logoPath);
+
+            return "https://upload.wikimedia.org/wikipedia/commons/" + 
+                   logoData.optString("pageimage");
     }
 }

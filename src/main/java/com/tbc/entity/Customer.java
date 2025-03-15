@@ -20,6 +20,17 @@ public class Customer {
     private String phone;
 
     private String email; // Optional field
+    
+    private String address;
+    
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public Long getId() {
 		return id;
@@ -61,5 +72,5 @@ public class Customer {
 		this.email = email;
 	}
     
-    
+        
 }

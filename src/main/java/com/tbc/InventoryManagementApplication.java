@@ -45,7 +45,7 @@ public class InventoryManagementApplication {
                 for (String name : brands) {
                     Brand brand = new Brand();
                     brand.setName(name);
-                    String logoUrl = logoService.fetchLogoUrl(name);
+                    String logoUrl = logoService.getBrandLogo(name);
                     brand.setLogoUrl(logoUrl);
                     brandRepository.save(brand);
                 }
